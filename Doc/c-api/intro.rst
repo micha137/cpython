@@ -195,7 +195,7 @@ or a global (or static) C variable, or  a local variable in some C function.
 When an object's reference count  becomes zero, the object is deallocated.  If
 it contains references to  other objects, their reference count is decremented.
 Those other  objects may be deallocated in turn, if this decrement makes their
-reference count become zero, and so on.  (There's an obvious problem  with
+reference count become zero, and so on.  (There's an obvious problem with
 objects that reference each other here; for now, the solution is  "don't do
 that.")
 
@@ -225,16 +225,16 @@ cancel each other out, so at the end the  reference count hasn't changed.  The
 only real reason to use the  reference count is to prevent the object from being
 deallocated as  long as our variable is pointing to it.  If we know that there
 is at  least one other reference to the object that lives at least as long as
-our variable, there is no need to increment the reference count  temporarily.
-An important situation where this arises is in objects  that are passed as
-arguments to C functions in an extension module  that are called from Python;
+our variable, there is no need to increment the reference count temporarily.
+An important situation where this arises is in objects that are passed as
+arguments to C functions in an extension module that are called from Python;
 the call mechanism guarantees to hold a  reference to every argument for the
 duration of the call.
 
 However, a common pitfall is to extract an object from a list and hold on to it
 for a while without incrementing its reference count. Some other operation might
 conceivably remove the object from the list, decrementing its reference count
-and possible deallocating it. The real danger is that innocent-looking
+and possibly deallocating it. The real danger is that innocent-looking
 operations may invoke arbitrary Python code which could do this; there is a code
 path which allows control to flow back to the user from a :c:func:`Py_DECREF`, so
 almost any operation is potentially dangerous.
